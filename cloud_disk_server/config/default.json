@@ -1,0 +1,4 @@
+{
+    "serverPort": 5000,
+    "dbUrl": "mongodb+srv://popadukdv:HP123456789@cloud.iqty1.mongodb.net/cloud-disk?retryWrites=true&w=majority"
+}

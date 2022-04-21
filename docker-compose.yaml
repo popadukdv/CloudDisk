@@ -1,0 +1,53 @@
+version: "3"
+services:
+  
+  client:
+   build:
+      context: ./cloud_disk_client
+      dockerfile: Dockerfile
+   ports:
+    -  3000:3000
+   container_name: mern-client
+   networks:
+    -  mern-stack-net
+   volumes:
+    -  ./cloud_disk_client/src:/usr/app/src
+    -  ./cloud_disk_client/public:/usr/app/public
+   depends_on:
+    - server
+   stdin_open: true
+   tty: true
+
+  server:
+   build:
+      context: ./cloud_disk_server
+      dockerfile: Dockerfile
+   ports:
+     - 5000:5000
+   container_name: mern-server
+   networks:
+     - mern-stack-net
+   volumes:
+    - ./cloud_disk_server:/usr/app
+    - ./cloud_disk_server/modules:/usr/app/modules
+    - ./cloud_disk_server/routes:/usr/app/routes
+   depends_on:
+    - db
+
+  db:
+    image: mongo
+    ports:
+      - 27017:27017
+    container_name: mongo-db
+    networks:
+      - mern-stack-net
+    volumes:
+      - mongo-data:/data/db
+
+networks:
+  mern-stack-net:
+    driver: bridge
+
+volumes:
+  mongo-data:
+    driver: local
